@@ -687,7 +687,7 @@ function animate(){
           }
         }
 
-        if(true){  // always animate
+        if(spd2>0.3){
           // Walking animation
           const swing = Math.sin(walkT * 6) * 1.2;
           if(m.leftLeg)  m.leftLeg.rotation.x  =  swing;
