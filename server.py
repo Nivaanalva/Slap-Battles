@@ -14,7 +14,7 @@ app = FastAPI()
 app.add_middleware(CORSMiddleware, allow_origins=["*"], allow_methods=["*"], allow_headers=["*"])
 
 PLATFORM_RADIUS = 35.0
-FALL_THRESHOLD  = -5.0
+FALL_THRESHOLD  = -8.0
 TICK_RATE       = 0.05
 GRAVITY         = -22.0
 GROUND_Y        = 0.0
