@@ -678,11 +678,11 @@ function animate(){
           if(phase < 1){
             const swing = Math.sin(phase * Math.PI);
             if(m.rightArm){
-              m.rightArm.rotation.x = -1.1 + swing * 2.0; // swings way forward
-              m.rightArm.rotation.y = -swing * 1.2;
+              m.rightArm.rotation.x = 0;
+              m.rightArm.rotation.y = -swing * 1.4;
             }
           } else {
-            if(m.rightArm){ m.rightArm.rotation.x=-1.1; m.rightArm.rotation.z=-0.15; }
+            if(m.rightArm){ m.rightArm.rotation.x=0; m.rightArm.rotation.y=0; m.rightArm.rotation.z=-0.15; }
             sa.active = false;
           }
         }
