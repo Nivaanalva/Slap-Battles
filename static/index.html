@@ -679,7 +679,7 @@ function animate(){
             const swing = Math.sin(phase * Math.PI);
             if(m.rightArm){
               m.rightArm.rotation.x = -1.1 + swing * 2.0; // swings way forward
-              m.rightArm.rotation.z = -0.15 - swing * 0.4;
+              m.rightArm.rotation.z = -0.15 + swing * 0.9;
             }
           } else {
             if(m.rightArm){ m.rightArm.rotation.x=-1.1; m.rightArm.rotation.z=-0.15; }
