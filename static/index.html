@@ -548,9 +548,9 @@ function makeCharacter(color, gloveId){
 
   // Right arm — held OUT TO THE SIDE like real Slap Battles
   const rightArm=new THREE.Group();
-  rightArm.position.set(0.6, 1.6, 0);
-  rightArm.rotation.x = -1.4;
-  rightArm.rotation.z = -0.1;
+  rightArm.position.set(0.5, 1.8, 0);
+  rightArm.rotation.x = -1.57;
+  rightArm.rotation.z = -0.2;
   const rArmMesh=new THREE.Mesh(new THREE.BoxGeometry(0.35,1,0.35),M(color));
   rArmMesh.position.y=-0.3; rightArm.add(rArmMesh);
 
