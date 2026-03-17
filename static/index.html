@@ -754,15 +754,16 @@ function syncMeshes(players){
   players.forEach(p=>{
     seen.add(p.id);
     if(!meshes[p.id]){
-      const {group,shadow,leftLeg,rightLeg,leftArm,rightArm}=makeCharacter(p.color,p.glove);
-      scene.add(group); scene.add(shadow);
-      meshes[p.id]={group,shadow,glove:p.glove};
+      const char=makeCharacter(p.color,p.glove);
+      scene.add(char.group); scene.add(char.shadow);
+      meshes[p.id]=char;
+      meshes[p.id].glove=p.glove;
     } else if(meshes[p.id].glove!==p.glove){
-      // Update glove color
       scene.remove(meshes[p.id].group); scene.remove(meshes[p.id].shadow);
-      const {group,shadow,leftLeg,rightLeg,leftArm,rightArm}=makeCharacter(p.color,p.glove);
-      scene.add(group); scene.add(shadow);
-      meshes[p.id]={group,shadow,glove:p.glove};
+      const char=makeCharacter(p.color,p.glove);
+      scene.add(char.group); scene.add(char.shadow);
+      meshes[p.id]=char;
+      meshes[p.id].glove=p.glove;
     }
   });
   Object.keys(meshes).forEach(id=>{
