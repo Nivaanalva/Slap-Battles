@@ -189,7 +189,18 @@ class Lobby:
             for p in list(self.players.values()):
                 if p.alive:
                     dist=math.sqrt(p.x**2+p.z**2)
-                    if p.y<FALL_THRESHOLD or dist>PLATFORM_RADIUS+4:
+                    # Check if on a bridge (4 bridges at 0, 90, 180, 270 degrees)
+                    on_bridge = False
+                    bridge_angles = [0, math.pi/2, math.pi, math.pi*1.5]
+                    for ba in bridge_angles:
+                        bx = math.cos(ba); bz = math.sin(ba)
+                        # Project player position onto bridge direction
+                        proj = p.x*bx + p.z*bz
+                        perp = abs(-p.x*bz + p.z*bx)
+                        if proj > PLATFORM_RADIUS and proj < PLATFORM_RADIUS+20 and perp < 2.0:
+                            on_bridge = True
+                            break
+                    if p.y<FALL_THRESHOLD or (dist>PLATFORM_RADIUS+4 and not on_bridge):
                         p.alive=False;p.deaths+=1;p.respawn_at=now+RESPAWN_TIME
                         await self.send_chat("",f"💨 {p.name} got slapped off!",system=True)
             await self.send_state()
