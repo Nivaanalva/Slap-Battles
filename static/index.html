@@ -548,7 +548,7 @@ function makeCharacter(color, gloveId){
 
   // Right arm — held FORWARD with palm facing out
   const rightArm=new THREE.Group();
-  rightArm.position.set(0.65, 1.55, 0);
+  rightArm.position.set(1.2, 1.4, -0.3);
   rightArm.rotation.x = -1.1;  // arm tilts forward
   rightArm.rotation.z = -0.15;
   const rArmMesh=new THREE.Mesh(new THREE.BoxGeometry(0.35,1,0.35),M(color));
@@ -679,7 +679,7 @@ function animate(){
             const swing = Math.sin(phase * Math.PI);
             if(m.rightArm){
               m.rightArm.rotation.x = -1.1 + swing * 2.0; // swings way forward
-              m.rightArm.rotation.z = -0.15 + swing * 0.9;
+              m.rightArm.rotation.y = swing * 1.2;
             }
           } else {
             if(m.rightArm){ m.rightArm.rotation.x=-1.1; m.rightArm.rotation.z=-0.15; }
@@ -700,7 +700,7 @@ function animate(){
           if(m.leftLeg)  m.leftLeg.rotation.x  *= 0.75;
           if(m.rightLeg) m.rightLeg.rotation.x *= 0.75;
           if(m.leftArm)  m.leftArm.rotation.x  *= 0.75;
-          if(m.rightArm && (!sa||!sa.active)) m.rightArm.rotation.x = -1.1;
+          if(m.rightArm && (!sa||!sa.active)){ m.rightArm.rotation.x=-1.1; m.rightArm.rotation.y=0; }
         }
         m.group.visible=true;
         m.shadow.visible=p.y<6; m.shadow.position.set(p.x,0.02,p.z);
