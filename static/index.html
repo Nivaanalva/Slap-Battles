@@ -234,6 +234,17 @@ input:focus{border-color:#ff9a3c;}input::placeholder{color:rgba(255,255,255,.3);
       <button id="chat-send" onclick="sendChat()">➤</button>
     </div>
   </div>
+  
+  <div id="mob-ctrl" style="display:none;position:absolute;bottom:80px;left:16px;z-index:10;">
+    <div style="display:grid;grid-template-columns:repeat(3,55px);gap:4px;">
+      <div></div><button ontouchstart="mV.u=1" ontouchend="mV.u=0" style="width:55px;height:55px;background:rgba(0,0,0,.45);border:2px solid rgba(255,255,255,.3);border-radius:10px;color:white;font-size:1.4rem">▲</button><div></div>
+      <button ontouchstart="mV.l=1" ontouchend="mV.l=0" style="width:55px;height:55px;background:rgba(0,0,0,.45);border:2px solid rgba(255,255,255,.3);border-radius:10px;color:white;font-size:1.4rem">◀</button><div></div>
+      <button ontouchstart="mV.r=1" ontouchend="mV.r=0" style="width:55px;height:55px;background:rgba(0,0,0,.45);border:2px solid rgba(255,255,255,.3);border-radius:10px;color:white;font-size:1.4rem">▶</button>
+      <div></div><button ontouchstart="mV.d=1" ontouchend="mV.d=0" style="width:55px;height:55px;background:rgba(0,0,0,.45);border:2px solid rgba(255,255,255,.3);border-radius:10px;color:white;font-size:1.4rem">▼</button><div></div>
+    </div>
+  </div>
+  <button id="mob-slap" ontouchstart="doSlap()" style="display:none;position:absolute;bottom:80px;right:16px;width:85px;height:85px;background:rgba(255,107,107,.85);border:none;border-radius:50%;color:white;font-family:'Fredoka One',cursive;font-size:1rem;z-index:10">SLAP 🖐️</button>
+
   <button class="btn btn-secondary" id="btn-leave" onclick="leaveGame()">✕ Leave</button>
 </div>
 
@@ -390,7 +401,7 @@ function buildIslands(){
 
     const bridgeGroup = new THREE.Group();
     bridgeGroup.position.set(bx, -0.05, bz);
-    bridgeGroup.rotation.y = -angle + Math.PI/2;
+    bridgeGroup.rotation.y = -angle;
 
     // Planks
     const numPlanks = Math.ceil(bridgeLen / 1.1);
@@ -548,9 +559,9 @@ function makeCharacter(color, gloveId){
 
   // Right arm — held OUT TO THE SIDE like real Slap Battles
   const rightArm=new THREE.Group();
-  rightArm.position.set(0.5, 1.8, 0);
-  rightArm.rotation.x = -1.57;
-  rightArm.rotation.z = -0.2;
+  rightArm.position.set(0.7, 1.5, 0);
+  rightArm.rotation.x = 0;    // not tilted forward
+  rightArm.rotation.z = -0.5; // hangs to the side
   const rArmMesh=new THREE.Mesh(new THREE.BoxGeometry(0.35,1,0.35),M(color));
   rArmMesh.position.y=-0.3; rightArm.add(rArmMesh);
 
@@ -679,11 +690,11 @@ function animate(){
             const swing = Math.sin(phase * Math.PI);
             if(m.rightArm){
               // Swing arm FORWARD across body (Z rotation goes from -0.5 to +0.8)
-              m.rightArm.rotation.x = -1.57;
-              m.rightArm.rotation.z = -0.2 - swing * 0.8;
+              m.rightArm.rotation.x = 0;
+              m.rightArm.rotation.z = -0.5 + swing * 1.3;
             }
           } else {
-            if(m.rightArm){ m.rightArm.rotation.x=-1.57; m.rightArm.rotation.z=-0.2; }
+            if(m.rightArm){ m.rightArm.rotation.x=0; m.rightArm.rotation.z=-0.5; }
             sa.active = false;
           }
         }
@@ -694,13 +705,13 @@ function animate(){
           if(m.leftLeg)  m.leftLeg.rotation.x  =  swing;
           if(m.rightLeg) m.rightLeg.rotation.x = -swing;
           if(m.leftArm)  m.leftArm.rotation.x  = -swing * 0.4;
-          if(m.rightArm && (!sa||!sa.active)){ m.rightArm.rotation.x=-1.57; m.rightArm.rotation.z=-0.2; }
+          if(m.rightArm && (!sa||!sa.active)) m.rightArm.rotation.z = -0.5;
           m.group.position.y = p.y + 0.12 + Math.abs(Math.sin(walkT*8)) * 0.1;
         } else {
           if(m.leftLeg)  m.leftLeg.rotation.x  *= 0.75;
           if(m.rightLeg) m.rightLeg.rotation.x *= 0.75;
           if(m.leftArm)  m.leftArm.rotation.x  *= 0.75;
-          if(m.rightArm && (!sa||!sa.active)){ m.rightArm.rotation.x=-1.57; m.rightArm.rotation.z=-0.2; }
+          if(m.rightArm && (!sa||!sa.active)){ m.rightArm.rotation.x=0; m.rightArm.rotation.z=-0.5; }
         }
         m.group.visible=true;
         m.shadow.visible=p.y<6; m.shadow.position.set(p.x,0.02,p.z);
@@ -832,9 +843,9 @@ function sendInput(){
   if(!ws||ws.readyState!==WebSocket.OPEN) return;
   let dx=0,dz=0;
   if(keys['ArrowUp']  ||keys['w']||keys['W']) dz-=1;
-  if(keys['ArrowDown']||keys['s']||keys['S']) dz+=1;
-  if(keys['ArrowLeft']||keys['a']||keys['A']) dx-=1;
-  if(keys['ArrowRight']||keys['d']||keys['D']) dx+=1;
+  if(keys['ArrowDown']||keys['s']||keys['S']||mV.d) dz+=1;
+  if(keys['ArrowLeft']||keys['a']||keys['A']||mV.l) dx-=1;
+  if(keys['ArrowRight']||keys['d']||keys['D']||mV.r) dx+=1;
   const jump=!!(keys[' ']||mobileJump); mobileJump=false;
 
   // Rotate movement by camera yaw so WASD is relative to camera
@@ -1097,6 +1108,11 @@ function flashSlap(){ const f=document.createElement('div'); f.className='slap-f
 function escHtml(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
 function escAttr(s){ return String(s).replace(/"/g,'&quot;'); }
 
+const mV={u:0,d:0,l:0,r:0};
+if('ontouchstart' in window){
+  document.getElementById('mob-ctrl').style.display='block';
+  document.getElementById('mob-slap').style.display='block';
+}
 initThree();
 loadGloves();
 </script>
