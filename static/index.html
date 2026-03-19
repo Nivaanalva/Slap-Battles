@@ -842,7 +842,7 @@ function doSlap(){
 function sendInput(){
   if(!ws||ws.readyState!==WebSocket.OPEN) return;
   let dx=0,dz=0;
-  if(keys['ArrowUp']  ||keys['w']||keys['W']) dz-=1;
+  if(keys['ArrowUp']||keys['w']||keys['W']||mV.u) dz-=1;
   if(keys['ArrowDown']||keys['s']||keys['S']||mV.d) dz+=1;
   if(keys['ArrowLeft']||keys['a']||keys['A']||mV.l) dx-=1;
   if(keys['ArrowRight']||keys['d']||keys['D']||mV.r) dx+=1;
@@ -1113,6 +1113,7 @@ if('ontouchstart' in window){
   document.getElementById('mob-ctrl').style.display='block';
   document.getElementById('mob-slap').style.display='block';
 }
+
 initThree();
 loadGloves();
 </script>
