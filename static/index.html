@@ -692,8 +692,8 @@ function animate(){
             const swing = Math.sin(phase * Math.PI);
             if(m.rightArm){
               // Swing arm FORWARD across body (Z rotation goes from -0.5 to +0.8)
-              m.rightArm.rotation.x = 0;
-              m.rightArm.rotation.z = -0.5 + swing * 1.3;
+              m.rightArm.rotation.x = -1.57;
+              m.rightArm.rotation.z = -0.2 - swing * 0.8;
             }
           } else {
             if(m.rightArm){ m.rightArm.rotation.x=-1.57; m.rightArm.rotation.z=-0.2; }
