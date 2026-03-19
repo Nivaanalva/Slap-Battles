@@ -127,6 +127,7 @@ input:focus{border-color:#ff9a3c;}input::placeholder{color:rgba(255,255,255,.3);
 .lobby-item .li-info{font-size:.7rem;color:rgba(255,255,255,.5);}
 
 * {-webkit-tap-highlight-color: transparent;}
+*{-webkit-tap-highlight-color:transparent;}
 ::-webkit-scrollbar{width:4px;}::-webkit-scrollbar-track{background:transparent;}::-webkit-scrollbar-thumb{background:rgba(255,255,255,.2);border-radius:4px;}
 </style>
 </head>
@@ -561,8 +562,8 @@ function makeCharacter(color, gloveId){
   // Right arm — held OUT TO THE SIDE like real Slap Battles
   const rightArm=new THREE.Group();
   rightArm.position.set(0.7, 1.5, 0);
-  rightArm.rotation.x = 0;    // not tilted forward
-  rightArm.rotation.z = -0.5; // hangs to the side
+  rightArm.rotation.x = -1.57;
+  rightArm.rotation.z = -0.2;
   const rArmMesh=new THREE.Mesh(new THREE.BoxGeometry(0.35,1,0.35),M(color));
   rArmMesh.position.y=-0.3; rightArm.add(rArmMesh);
 
